@@ -29,7 +29,7 @@
       --radius: 14px;
       --radius-sm: 8px;
       --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-    } 
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -692,6 +692,13 @@
       color: var(--text);
       background: var(--violet-soft);
     }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+    }
+    .contact-honeypot {
+      display: none;
+    }
 
     /* ===========================
        FOOTER
@@ -1052,7 +1059,7 @@
     <div class="support-hero">
       <div class="section-tag">Policy</div>
       <h1 class="section-title" style="margin:12px auto 12px;">Refund Policy</h1>
-      <p style="color:var(--text-muted);max-width:600px;margin:0 auto;font-size:1rem;">Use this page to explain when customers can request a refund, how claims are reviewed, and how long reimbursements usually take. Everything below is placeholder copy you can rewrite later.</p>
+      <p style="color:var(--text-muted);max-width:600px;margin:0 auto;font-size:1rem;">Our refund policy explains when requests can be reviewed, which situations may qualify, and how long support updates usually take.</p>
     </div>
 
     <section>
@@ -1101,7 +1108,7 @@
     <section style="text-align:center;padding-bottom:100px;">
       <div class="section-tag">Support</div>
       <h2 class="section-title" style="margin:12px auto 14px;">Need help with a refund request?</h2>
-      <p style="color:var(--text-muted);max-width:560px;margin:0 auto 28px;font-size:1rem;">If you want to turn this into a real policy later, you can replace the text above and link it to your support workflow. For now, the contact page is ready too.</p>
+      <p style="color:var(--text-muted);max-width:560px;margin:0 auto 28px;font-size:1rem;">If you need a review, contact support with your order email, payment details, and a short description of the issue so the request can be checked quickly.</p>
       <div class="hero-actions" style="margin-bottom:0;">
         <button class="btn-primary" onclick="showPage('contact', null)">Contact Support</button>
         <button class="btn-secondary" onclick="showPage('tutorial', null)">View Tutorial</button>
@@ -1118,42 +1125,46 @@
     <div class="support-hero">
       <div class="section-tag">Contact</div>
       <h1 class="section-title" style="margin:12px auto 12px;">Contact Us</h1>
-      <p style="color:var(--text-muted);max-width:600px;margin:0 auto;font-size:1rem;">This page gives you a clean support layout right away. Replace the contact details, response times, and placeholder form text with your real information whenever you want.</p>
+      <p style="color:var(--text-muted);max-width:600px;margin:0 auto;font-size:1rem;">Reach our support team for order questions, delivery issues, and refund requests. Messages sent with the form below are routed to our support inbox.</p>
     </div>
 
     <section>
       <div class="contact-grid">
-        <div class="contact-form-preview">
+        <form id="contact-form" class="contact-form-preview contact-form" action="https://formsubmit.co/kovaax001recup@gmail.com" method="POST">
           <h3>Send a message</h3>
-          <p class="contact-note">This is a front-end contact block only for now. You can connect it to a real form service later, or simply keep the layout and swap in your own support method.</p>
+          <p class="contact-note">Include your order email and as much detail as possible so the request can be reviewed faster.</p>
+          <input type="hidden" name="_subject" value="New NitroDeals support message" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" class="contact-honeypot" tabindex="-1" autocomplete="off" />
           <div class="form-group">
             <label class="form-label">Full name</label>
-            <input type="text" class="form-input" placeholder="John Doe" />
+            <input type="text" class="form-input" name="name" placeholder="John Doe" required />
           </div>
           <div class="form-group">
             <label class="form-label">Email address</label>
-            <input type="email" class="form-input" placeholder="support@example.com" />
+            <input type="email" class="form-input" name="email" placeholder="you@example.com" required />
           </div>
           <div class="form-group">
             <label class="form-label">Order ID</label>
-            <input type="text" class="form-input" placeholder="Optional" />
+            <input type="text" class="form-input" name="order_id" placeholder="Optional" />
           </div>
           <div class="form-group" style="margin-bottom:22px;">
             <label class="form-label">Message</label>
-            <textarea class="form-input" rows="6" placeholder="Describe your question or issue here..."></textarea>
+            <textarea class="form-input" name="message" rows="6" placeholder="Describe your question or issue here..." required></textarea>
           </div>
-          <button class="btn-pay" type="button">Send Message</button>
+          <button class="btn-pay" type="submit" id="contact-submit-button">Send Message</button>
           <div class="contact-links">
             <a href="#" class="contact-chip" onclick="showPage('refund', null); return false;">View Refund Policy</a>
             <a href="#" class="contact-chip" onclick="showPage('tutorial', null); return false;">Open Tutorial</a>
           </div>
-        </div>
+        </form>
 
         <div class="support-grid" style="grid-template-columns:1fr;">
           <div class="support-card">
             <h3>Email support</h3>
-            <p>support@nitrodeals.example</p>
-            <p style="margin-top:10px;">Best for order questions, delivery issues, and refund requests. You can replace this with your real email later.</p>
+            <p>kovaax001recup@gmail.com</p>
+            <p style="margin-top:10px;">Use this inbox for order questions, delivery issues, and refund requests.</p>
           </div>
           <div class="support-card">
             <h3>Expected response time</h3>
@@ -1247,6 +1258,7 @@
 </div>
 
 <script>
+  const CONTACT_FORM_ENDPOINT = 'https://formsubmit.co/ajax/kovaax001recup@gmail.com';
   const STRIPE_PAYMENT_LINKS = {
     'nitro-full-3-months': 'https://buy.stripe.com/4gM14g57B74c4l50se1oI00'
   };
@@ -1343,6 +1355,48 @@
   }
 
   /* ===========================
+     CONTACT FORM
+  =========================== */
+  async function handleContactSubmit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const button = document.getElementById('contact-submit-button');
+    const defaultLabel = 'Send Message';
+
+    button.disabled = true;
+    button.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(CONTACT_FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: new FormData(form)
+      });
+
+      const result = await response.json();
+      if (!response.ok || result.success === 'false' || result.success === false) {
+        throw new Error(result.message || 'Unable to send message.');
+      }
+
+      form.reset();
+      showToast('Message sent', 'Your support request has been sent successfully.');
+    } catch (error) {
+      showToast('Send failed', 'If this is the first submission, confirm the activation email sent to kovaax001recup@gmail.com. A hosted page may also be required for testing.');
+    } finally {
+      button.disabled = false;
+      button.textContent = defaultLabel;
+    }
+  }
+
+  function initContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    form.addEventListener('submit', handleContactSubmit);
+  }
+
+  /* ===========================
      FAQ ACCORDION
   =========================== */
   function toggleFaq(btn) {
@@ -1372,7 +1426,10 @@
       observer.observe(el);
     });
   }
-  document.addEventListener('DOMContentLoaded', initAnimations);
+  document.addEventListener('DOMContentLoaded', () => {
+    initAnimations();
+    initContactForm();
+  });
 </script>
 </body>
 </html>
